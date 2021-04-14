@@ -1,0 +1,27 @@
+{
+  "name": "test00",
+  "version": "1.0.0",
+  "description": "日常测试",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tongshisan/Test00.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tongshisan/Test00/issues"
+  },
+  "homepage": "https://github.com/Tongshisan/Test00#readme",
+  "dependencies": {
+    "@babel/core": "^7.13.14",
+    "@babel/preset-env": "^7.13.12",
+    "escodegen": "^2.0.0",
+    "esprima": "^4.0.1",
+    "estraverse": "^5.2.0",
+    "uglify-js": "^2.8.29"
+  }
+}
