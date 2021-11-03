@@ -1,0 +1,236 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-08-17 14:08:29
+ * @LastEditTime: 2021-08-21 18:33:50
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /lizhi/Test00/canvas.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <canvas id="test"></canvas>
+  <canvas id="sanjiaoxing"></canvas>
+  <canvas id="taiji" width="300" height="300"></canvas>
+  <canvas id="taiji2" width="300" height="300"></canvas>
+  <canvas id="heart" width="300" height="300"></canvas>
+  <canvas id="rotatetaiji" width="300" height="300"></canvas>
+  <canvas id="heart2" width="300" height="300"></canvas>
+  <script>
+    function drawArc() {
+      /** @type {HTMLCanvasElement} */
+      const canvas = document.getElementById('test');
+      if (canvas.getContext) {
+        const ctx = canvas.getContext('2d');
+        ctx.beginPath();
+        ctx.arc(75, 75, 50, 0, Math.PI * 2, true);
+        ctx.moveTo(110, 75);
+        ctx.arc(75, 75, 35, 0, Math.PI, false);
+        ctx.moveTo(65, 65);
+        ctx.arc(60, 65, 5, 0, Math.PI * 2);
+        ctx.moveTo(95, 65);
+        ctx.arc(90, 65, 5, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+    }
+
+    function drawSanjiaoxing() {
+      /** @type {HTMLCanvasElement} */
+      const canvas = document.getElementById('sanjiaoxing');
+      if (canvas.getContext) {
+        const ctx = canvas.getContext('2d');
+        ctx.beginPath();
+        ctx.moveTo(25, 25);
+        ctx.lineTo(105, 25);
+        ctx.lineTo(25, 105);
+        ctx.fill();
+
+        ctx.moveTo(125, 125);
+        ctx.lineTo(45, 125);
+        ctx.lineTo(125, 45);
+        ctx.closePath()
+        ctx.stroke()
+      }
+    }
+
+    function drawTaiji() {
+      /** @type {HTMLCanvasElement} */
+      const canvas = document.getElementById('taiji');
+      if (canvas.getContext) {
+        const ctx = canvas.getContext('2d');
+        ctx.beginPath();
+        ctx.arc(150, 150, 150, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.moveTo(150, 150);
+        // ctx.arc(225, 75, 75, 0, Math.PI + (Math.PI * 1) / 2, true);
+        ctx.arc(150, 75, 75, Math.PI / 2, Math.PI + Math.PI / 2)
+        ctx.stroke()
+
+        ctx.moveTo(150, 150);
+        ctx.arc(150, 225, 75, -Math.PI / 2, Math.PI - Math.PI / 2)
+        ctx.stroke()
+
+        ctx.moveTo(180, 75);
+        ctx.arc(150, 75, 30, 0, Math.PI * 2);
+        ctx.stroke()
+
+        ctx.beginPath();
+        ctx.moveTo(180, 225);
+        ctx.arc(150, 225, 30, 0, Math.PI * 2)
+        // ctx.fill()
+        ctx.stroke()
+      }
+    }
+
+    function drawTaiji2() {
+      /** @type {HTMLCanvasElement} */
+      const canvas = document.getElementById('taiji2');
+      if (canvas.getContext) {
+        const ctx = canvas.getContext('2d');
+        const draw = () => {
+          // 右半圆
+          ctx.beginPath();
+          ctx.arc(150, 150, 150, 0 - Math.PI / 2, Math.PI / 2)
+          ctx.fill()
+
+          // 左半圆
+          ctx.beginPath();
+          ctx.arc(150, 150, 150, Math.PI / 2, 0 - Math.PI / 2)
+          ctx.stroke()
+
+          // 左小半圆
+          ctx.beginPath();
+          ctx.arc(150, 75, 75, Math.PI / 2, 0 - Math.PI / 2)
+          ctx.fill()
+
+          // 右小半圆
+          ctx.beginPath()
+          ctx.arc(150, 225, 75, 0 - Math.PI / 2, Math.PI / 2)
+          ctx.fillStyle = '#fff'
+          ctx.fill()
+
+
+          // 小白圆
+          ctx.beginPath()
+          ctx.arc(150, 75, 30, 0, Math.PI * 2);
+          ctx.fill()
+
+          // 小黑圆
+          ctx.beginPath()
+          ctx.arc(150, 225, 30, 0, Math.PI * 2);
+          ctx.fillStyle = '#000'
+          ctx.fill()    
+        }    
+        draw()
+      }
+    }
+
+    function drawHeart() {
+      /** @type {HTMLCanvasElement} */
+      const canvas = document.getElementById('heart')
+      if (canvas.getContext) {
+        const ctx = canvas.getContext('2d');
+
+        // 上左半圆
+        ctx.beginPath()
+        ctx.arc(75, 75, 75, 0, Math.PI, true);
+        ctx.fill()
+
+        // 上右半圆
+        ctx.beginPath()
+        ctx.arc(225, 75, 75, 0, Math.PI, true)
+        ctx.fill()
+
+        // 下左 1 /4 圆
+        ctx.beginPath()
+        ctx.moveTo(150, 75)
+        ctx.arc(150, 75, 150, Math.PI / 2, Math.PI);
+        ctx.fill()
+
+        // 下右 1 / 4 圆
+        ctx.beginPath()
+        ctx.moveTo(150, 75)
+        ctx.arc(150, 75, 150, 0, Math.PI / 2);
+        ctx.fill()
+      }
+    }
+
+
+    function rotatetaiji() {
+       /** @type {HTMLCanvasElement} */
+       const canvas = document.getElementById('rotatetaiji');
+       if (canvas.getContext) {
+         const ctx = canvas.getContext('2d');
+         ctx.translate(150, 150)
+         function draw() {
+           ctx.rotate(Math.PI / 180)
+           // 右半圆
+          ctx.beginPath();
+          // ctx.moveTo(0, -150)
+          ctx.arc(0, 0, 150, 0 - Math.PI / 2, Math.PI / 2)
+          ctx.fill()
+
+          // 左半圆
+          ctx.beginPath();
+          ctx.arc(0, 0, 150, Math.PI / 2, 0 - Math.PI / 2)
+          ctx.fillStyle = '#fff'
+          ctx.stroke()
+          ctx.fill()
+
+          // 左小半圆
+          ctx.beginPath();
+          ctx.arc(0, -75, 75, Math.PI / 2, 0 - Math.PI / 2)
+          ctx.fillStyle = '#000'
+          ctx.fill()
+
+          // 右小半圆
+          ctx.beginPath()
+          ctx.moveTo(0, 0)
+          ctx.arc(0, 75, 75, 0 - Math.PI / 2, Math.PI / 2)
+          ctx.fillStyle = '#fff'
+          ctx.fill()
+
+          // 小白圆
+          ctx.beginPath()
+          ctx.arc(0, -75, 30, 0, Math.PI * 2);
+          ctx.fill()
+
+          // 小黑圆
+          ctx.beginPath()
+          ctx.arc(0, 75, 30, 0, Math.PI * 2);
+          ctx.fillStyle = '#000'
+          ctx.fill() 
+         }
+         draw()
+         setInterval(draw, 10)
+       }
+    }
+
+    function drawHeart2() {
+      /** @type {HTMLCanvasElement} */
+      const canvas = document.getElementById('heart2');
+      if (canvas.getContext) {
+        const ctx = canvas.getContext('2d');
+        ctx.translate(150, 150)
+        ctx.moveTo(0, 25)
+        ctx.bezierCurveTo(20, 70, 150, -150, 0, -150);
+        ctx.fill()
+      }
+    }
+
+    drawArc()
+    drawSanjiaoxing()
+    drawTaiji()
+    drawTaiji2()
+    drawHeart()
+    rotatetaiji()
+    drawHeart2()
+  </script>
+</body>
+</html>
