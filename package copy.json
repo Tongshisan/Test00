@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "@types/react-router-dom": "^5.1.8",
+    "react-router-dom": "^5.2.0"
+  },
+  "dependencies": {
+    "crypto-js": "^4.1.1",
+    "react-collapse-pane": "^2.0.1"
+  }
+}

@@ -1,0 +1,59 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-11-24 11:01:41
+ * @LastEditTime: 2021-11-25 14:59:52
+ * @LastEditors: Please set LastEditors
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: /lizhi/2021-11-22.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+    }
+    div {
+      width: 100%;
+      height: 100px;
+      background-color: burlywood;
+    }
+  </style>
+</head>
+<body>
+  <p>我是p元素</p>
+  <span>我是 span 元素</span>
+  <li>我是 li 元素</li>
+  <div>我是 div</div>
+  <a href="https://www.baidu.com"><span>测试 a 标签内的 span 标签</span></a>
+  
+  我是text 元素
+  <!-- <div></div> -->
+
+  <script>
+    const body = document.body;
+    body.addEventListener('click', (e) => {
+      console.log(e, e.target.nodeType, e.target.nodeType === Node.TEXT_NODE);
+      if (e.target.nodeType === Node.TEXT_NODE) {
+        console.log('我是文本节点')
+      }
+      if (e.target.firstChild.nodeType === Node.TEXT_NODE) {
+        console.log('我的第一个子元素是文本节点')
+      }
+      // console.log('selection', window.getSelection().toString())
+      // console.log('range', window.getSelection().getRangeAt(0))
+    })
+    body.addEventListener('contextmenu', (e) => {
+      console.log(e, e.target.nodeType);
+      // console.log('selection', window.getSelection().toString())
+      // console.log('range', window.getSelection().getRangeAt(0))
+    })
+  </script>
+</body>
+</html>

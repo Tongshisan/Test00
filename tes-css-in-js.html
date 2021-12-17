@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div class="test"></div>
+  <div id="btn">测试按钮</div>
+  <script>
+    function addClass() {
+      const style = document.createElement('style');
+      const content = `.test
+                        { 
+                          width: 100px;
+                          height: 100px;
+                          background-color: #000 }
+                        .test:hover
+                        {
+                          background-color: green
+                        }`;
+      style.appendChild(document.createTextNode(content));
+      console.log(style)
+      document.head.appendChild(style);
+    }
+    const btn = document.getElementById('btn');
+    btn.addEventListener('click', () => {
+      addClass();
+    })
+  </script>
+</body>
+</html>
