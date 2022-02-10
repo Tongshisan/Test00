@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <canvas id="test" width="400" height="400"></canvas>
+
+  <script>
+    /** @type {HTMLCanvasElement} */
+    const canvas = document.getElementById('test');
+    const ctx = canvas.getContext('2d');
+    ctx.beginPath()
+    ctx.fillRect(0, 0, 100, 100);
+    ctx.closePath();
+    ctx.moveTo(50, 50);
+    ctx.fillStyle = 'red';
+    ctx.globalCompositeOperation = 'destination-out'
+    ctx.fillRect(50, 50, 100, 100);
+    ctx.fillText('测试', 50 + 6, 50)
+  </script>
+</body>
+</html>

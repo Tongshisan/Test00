@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    canvas {
+      border: 1px solid #000;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" width="1000px" height="1000px" ></canvas>
+
+  <script>
+    /** @type {HTMLCanvasElement} */
+    const canvas = document.getElementById('canvas');
+    let url = '';
+    let imageData = {};
+    if (canvas.getContext) {
+      const ctx = canvas.getContext('2d');
+      let startDraw = false;
+      let startPointX = 0;
+      let startPointY = 0;
+      canvas.addEventListener('mousedown', (e) => {
+        const { clientX, clientY } = e;
+        startPointX = clientX;
+        startPointY = clientY;
+        startDraw = true;
+        ctx.beginPath();
+        ctx.moveTo(clientX, clientY)
+      })
+      canvas.addEventListener('mousemove', (e) => {
+        if (startDraw) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          loadImage(canvas, url);
+          // drawLine({e, x: startPointX, y: startPointY, ctx})
+          drawRect({e, x: startPointX, y: startPointY, ctx});
+        }
+      })
+      canvas.addEventListener('mouseup', (e) => {
+        startDraw = false;
+        url = canvas.toDataURL();
+        // console.log('up', ctx.getImageData(startPointX, startPointY, 1, 1))
+        // imageData = ctx.getImageData(startPointX, startPointY, 1, 1);
+      })
+    }
+
+    /**
+     * @description: 画直线
+     * @param {*} e: event
+     * @param {*} x 起点 x 坐标
+     * @param {*} y 起点 y 坐标
+     * @param {*} ctx 
+     * @return {*}
+     */
+    function drawLine({e, x, y, ctx}) {
+      const { clientX, clientY } = e;
+      
+      ctx.beginPath();
+      ctx.moveTo(x, y)
+      ctx.lineTo(clientX, clientY);
+      ctx.stroke()
+    }
+
+    function drawRect({e, x, y, ctx}) {
+      ctx.beginPath();
+      ctx.strokeRect(x, y, e.offsetX - x, e.offsetY - y);
+    }
+
+    function loadImage(canvas, url) {
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+      img.src = url;
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      // console.log('imgageData', imageData)
+      // ctx.putImageData(imageData, 0, 0)
+    }
+
+  </script>
+</body>
+</html>

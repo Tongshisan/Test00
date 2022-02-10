@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    div {
+      width: 100px;
+      height: 100px;
+    }
+  </style>
+</head>
+<body>
+  <div id="create">创建 test DB</div>
+  <div id="view">查看 indexDB</div>
+  <div id="delete">删除 test DB</div>
+  <div id="delData">删除 test 所有数据</div>
+  <div id="add">增加数据</div>
+
+  <script>
+    let flag = 1;
+    const create = document.getElementById('create');
+    const view = document.getElementById('view');
+    const del = document.getElementById('delete');
+    const delData = document.getElementById('delData');
+    const add = document.getElementById('add');
+
+    delData.addEventListener('click', async () => {
+      // const transaction = 
+    })
+
+    add.addEventListener('click', () => {
+      const req = window.indexedDB.open('test', 3);
+      console.log('add', req)
+      req.onerror = () => {
+        console.error('error')
+      }
+      req.onupgradeneeded = (e) => {
+        const db = e.target.result;
+        const  store = db.createObjectStore('Users', {keyPath: 'userId', autoIncrement: false});
+        console.log('创建对象仓库成功');
+      }
+      req.onsuccess = (e) => {
+        console.log('success');
+        const db = e.target.result;
+        
+        const transaction = db.transaction(["Users"], "readwrite");
+        console.log('db', db, transaction)
+        const objectStore = transaction.objectStore("Users");
+        const addReq = objectStore.put({'userId': flag, 'userName': flag, 'age': flag});
+        addReq.onsuccess = () => {
+          console.log('添加成功', flag);
+          flag++
+        }
+        addReq.onerror = () => {
+          console.log('添加失败', flag);
+        }
+
+      }
+    })
+
+    create.addEventListener('click', async () => {
+      const testDB = window.indexedDB.open('test');
+      const test1DB = window.indexedDB.open('test1');
+      const test2DB = window.indexedDB.open('test2');
+      const promises = [testDB, test1DB, test2DB];
+      try {
+        const res = await Promise.all(promises);
+        console.log('res', res);
+      } catch (error) {
+        console.error(error);
+      }
+      // creDB.onsuccess = async () => {
+      //   const dbs = await window.indexedDB.databases();
+      //   console.log('创建成功', dbs)
+      // }
+      // creDB.onerror = () => {
+      //   console.log('创建失败')
+      // }
+    })
+
+    view.addEventListener('click', async () => {
+      const dbs = await window.indexedDB.databases();
+      console.log('查看 dbs', dbs);
+    })
+
+    del.addEventListener('click', async () => {
+      const test = new Promise((resolve, reject) => {
+        const del = window.indexedDB.deleteDatabase('test');
+        del.onsuccess = () => {
+          console.log('删除成功', )
+          resolve(1);
+        }
+        del.onerror = () => {
+          console.log('删除失败')
+          reject(1);
+        }
+        // del.
+      })
+      const res = await Promise.all([test]);
+      console.log('res', res, test)
+      // try {
+      //   const dbs = await window.indexedDB.databases();
+      //   const delPromises = dbs.map((db) => {
+      //     return new Promise((resolve, reject) => {
+      //       const del = window.indexedDB.deleteDatabase(db.name);
+      //       del.onsuccess = () => {
+      //         resolve();
+      //       };
+      //       del.onerror = () => {
+      //         reject();
+      //       }
+      //     })
+      //   })
+      //   console.log('delPromise', delPromises)
+      //   const res = await Promise.all(delPromises);
+      //   console.log('批量删除', res)
+      // } catch (error) {
+      //   console.error(error)
+      // }
+      // delDB.onsuccess = async () => {
+      //   const dbs = await window.indexedDB.databases();
+      //   console.log('删除成功', dbs);
+      // }
+      // delDB.onerror = () => {
+      //   console.log('删除失败');
+      // }
+      
+    })
+  </script>
+</body>
+</html>
+
+
+
+import { exit, relaunch } from "@tauri-apps/api/process";
+import { getName, getVersion } from "@tauri-apps/api/app";
+import windowManager from "@d/utils/tauri-plugins/window-manager";
+import preferences from "@d/utils/tauri-plugins/preferences";
+
+/**
+ * @description: 重置应用
+ * @param {*}
+ * @return {*}
+ */
+export const resetApp = async () => {
+  const token = localStorage.getItem('token');
+  localStorage.clear();
+  try {
+    const dbs = await window.indexedDB.databases();
+    const delPromises = dbs.map(async (db: any) => {
+    if (db.name) {
+      return new Promise((resolve, reject) => {
+        const open = window.indexedDB.open(db.name);
+        let currentDB: any = null;
+        open.onsuccess = async (e: any) => {
+          console.log('打开成功', e)
+          currentDB = open.result;
+          const transaction = currentDB.transaction(currentDB.objectStoreNames, 'readwrite');
+          console.log('store', transaction.objectStoreNames)
+          const clearDataPromises = [...transaction.objectStoreNames].map((item) => {
+            return new Promise((resolve1, reject1) => {
+              const objectStore = transaction.objectStore(item);
+              const clearReq = objectStore.clear();
+              clearReq.onsuccess = () => {
+                resolve1(1);
+              };
+              clearReq.onerror = () => {
+                reject1();
+              }
+            })
+          })
+          try {
+            const clearRes = await Promise.all(clearDataPromises)
+            console.log('clearRes', clearRes)
+            resolve(1);
+          } catch (error) {
+            reject();
+          }
+          // currentDB.onversionchange = () => {
+          //   console.log('onversionchange', currentDB);
+          //   currentDB.close();
+          // }
+        }
+        // const del = window.indexedDB.deleteDatabase(db.name);
+        // del.onsuccess = () => {
+        //   console.log('del-success')
+        //   // resolve(1);
+        // };
+        // del.onerror = (e) => {
+        //   reject(new Error(`删除 ${db.name} 数据失败`));
+        // };
+        // del.onblocked = (e) => {
+        //   console.log('关闭 block', currentDB)
+        //   currentDB.close();
+        //   console.log('close')
+        //   // resolve(1);
+        // }
+      })
+    }
+  });
+  console.log('delDBPromises', delPromises)
+  await Promise.all(delPromises);
+  if (token) {
+    localStorage.setItem('token', token);
+  }
+  await windowManager.clear();
+  await preferences.clear();
+  relaunch();
+  console.log("重置应用");
+  } catch (error) {
+    console.log('error', error);
+  }
+};
+
+/**
+ * @description: 退出应用
+ * @param {*}
+ * @return {*}
+ */
+export const quitApp = () => {
+  exit();
+  console.log("退出应用");
+};
+
+/**
+ * @description: 获取 app name
+ * @param {*}
+ * @return {*}
+ */
+export const getAppName = () => {
+  return new Promise<string>(async (resolve, reject) => {
+    try {
+      const name: string = await getName();
+      console.log("获取 app name", name);
+      resolve(name || "");
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+/**
+ * @description: 获取 app 版本号
+ * @param {*}
+ * @return {*}
+ */
+export const getAppVersion = () => {
+  return new Promise<string>(async (resolve, reject) => {
+    try {
+      const version: string = await getVersion();
+      console.log("获取 app 版本号", version);
+      resolve(version || "");
+    } catch (error) {
+      reject(error);
+    }
+  });
+};

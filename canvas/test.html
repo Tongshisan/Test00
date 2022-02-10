@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <canvas id="test" width="1000" height="1000"></canvas>
+
+  <script>
+    const canvas = document.getElementById('test');
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'red';
+    ctx.beginPath();
+    ctx.fillRect(200, 200, 200, 200)
+    ctx.fillRect(200, 200, 200, -200)
+    ctx.closePath();
+    ctx.fill();
+  </script>
+</body>
+</html>
